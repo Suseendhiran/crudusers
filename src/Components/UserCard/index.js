@@ -13,7 +13,14 @@ export default function UserCard({ celebDetails, id, handleDelete }) {
   console.log("cele", celebDetails);
 
   return (
-    <Card sx={{ width: 345, height: "fit-content" }}>
+    <Card
+      sx={{
+        width: 345,
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "space-between",
+      }}
+    >
       <CardActionArea>
         <CardMedia
           component="img"
