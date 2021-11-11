@@ -1,5 +1,12 @@
 .App {
   text-align: center;
+  background-color: aliceblue;
+  min-height: 100vh;
+  font-family: "Mohave", sans-serif;
+  font-family: "Poppins", sans-serif;
+  font-family: "Roboto", sans-serif;
+  margin: auto;
+  padding: 100px;
 }
 
 .App-logo {
@@ -34,5 +41,43 @@
   }
   to {
     transform: rotate(360deg);
+  }
+}
+.header {
+  width: 100%;
+  /* //padding-left: 100px; */
+  display: flex;
+  justify-content: flex-start;
+  margin: auto;
+  max-width: 1440px;
+  margin: auto;
+  gap: 40px;
+}
+.header > a {
+  text-decoration: none;
+}
+.header > a:focus {
+  color: black;
+}
+.users-list {
+  padding-top: 50px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 60px;
+  max-width: 1440px;
+  margin: auto;
+  justify-content: space-between;
+}
+.heading {
+  margin: 0;
+  padding: 30px;
+}
+.edit-celeb {
+  text-decoration: none;
+}
+
+@media (max-width: 600px) {
+  .App {
+    padding: 20px;
   }
 }
