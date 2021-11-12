@@ -50,7 +50,7 @@ export default function UserCard({ celebDetails, id, handleDelete }) {
             alignItems: "center",
           }}
         >
-          <Link className="edit-celeb" to={`/edit-user/${id}`}>
+          <Link className="edit-celeb" to={`/edit-celeb/${id}`}>
             <Button size="small" color="primary">
               <EditIcon fontSize="10px" style={{ marginRight: "5px" }} />
               Edit

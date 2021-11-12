@@ -4,7 +4,7 @@ import { Link, useLocation } from "react-router-dom";
 function Header() {
   const [navDetails, setNavDetails] = useState([
     { name: "Celebs List", path: "/" },
-    { name: "Add Celeb", path: "/create-user" },
+    { name: "Add Celeb", path: "/add-celeb" },
   ]);
   const location = useLocation();
 

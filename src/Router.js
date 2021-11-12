@@ -94,10 +94,10 @@ function Router() {
       <Route exact path="/">
         <UsersList celebs={celebs} setCelebs={setCelebs} />
       </Route>
-      <Route path="/create-user">
+      <Route path="/add-celeb">
         <AddCelebs celebs={celebs} setCelebs={setCelebs} />
       </Route>
-      <Route path="/edit-user/:id">
+      <Route path="/edit-celeb/:id">
         <AddCelebs celebs={celebs} setCelebs={setCelebs} />
       </Route>
     </Switch>
