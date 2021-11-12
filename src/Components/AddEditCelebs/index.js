@@ -25,10 +25,10 @@ function Index({ celebs, setCelebs }) {
   return (
     <Formik
       initialValues={{
-        name: celebs[id]?.name,
-        imageUrl: celebs[id]?.imageUrl,
-        about: celebs[id]?.about,
-        wikiUrl: celebs[id]?.wikiUrl,
+        name: celebs[id]?.name ? celebs[id]?.name : "",
+        imageUrl: celebs[id]?.imageUrl ? celebs[id]?.imageUrl : "",
+        about: celebs[id]?.about ? celebs[id]?.about : "",
+        wikiUrl: celebs[id]?.wikiUrl ? celebs[id]?.wikiUrl : "",
       }}
       enableReinitialize
       onSubmit={(values) => {
