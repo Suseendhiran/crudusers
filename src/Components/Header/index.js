@@ -15,7 +15,7 @@ function Header() {
     borderRadius: "12px",
     transition: "all 0.2s",
   };
-  console.log(location.pathname);
+
   return (
     <div>
       <h2 className="heading">Fav Celebrities</h2>

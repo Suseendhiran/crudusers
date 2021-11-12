@@ -10,8 +10,6 @@ import InfoIcon from "@mui/icons-material/Info";
 import DeleteIcon from "@mui/icons-material/Delete";
 
 export default function UserCard({ celebDetails, id, handleDelete }) {
-  console.log("cele", celebDetails);
-
   return (
     <Card
       sx={{

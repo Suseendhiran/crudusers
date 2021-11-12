@@ -10,10 +10,10 @@ function Index({ celebs, setCelebs }) {
   let history = useHistory();
   const handleCelebDetails = (values) => {
     let celebList = [...celebs];
-    console.log({ ...values });
+
     if (id) {
       celebList[id] = { ...values };
-      console.log("after", celebList);
+
       setCelebs([...celebList]);
       history.push("/");
     } else {

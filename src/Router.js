@@ -86,9 +86,7 @@ function Router() {
       wikiUrl: "https://en.wikipedia.org/wiki/Tom_Holland",
     },
   ]);
-  useEffect(() => {
-    console.log("change", celebs);
-  }, [celebs]);
+
   return (
     <Switch>
       <Route exact path="/">
