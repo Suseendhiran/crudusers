@@ -1,11 +1,14 @@
 import React from "react";
 import UserCard from "../UserCard";
+import { useCelebrities } from "../../Providers/CelebritiesProvider";
 
-function index({ celebs, setCelebs }) {
+function Index() {
+  const { celebs, setCelebs } = useCelebrities();
   const handleDelete = (id) => {
     let celebsList = celebs.filter((celeb, index) => index !== id);
     setCelebs([...celebsList]);
   };
+
   return (
     <div className="users-list">
       {" "}
@@ -16,4 +19,4 @@ function index({ celebs, setCelebs }) {
   );
 }
 
-export default index;
+export default Index;

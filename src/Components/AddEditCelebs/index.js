@@ -4,8 +4,10 @@ import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import { useParams, useHistory } from "react-router-dom";
 import { Formik } from "formik";
+import { useCelebrities } from "../../Providers/CelebritiesProvider";
 
-function Index({ celebs, setCelebs }) {
+function Index() {
+  const { celebs, setCelebs } = useCelebrities();
   const { id } = useParams();
   let history = useHistory();
   const handleCelebDetails = (values) => {

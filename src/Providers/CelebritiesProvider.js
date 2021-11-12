@@ -1,9 +1,8 @@
-import React, { useState } from "react";
-import { Route, Switch } from "react-router-dom";
-import UsersList from "./Components/UsersList";
-import AddCelebs from "./Components/AddEditCelebs";
+import React, { createContext, useContext, useState } from "react";
 
-function Router() {
+export const celebrityContext = createContext();
+
+function CelebritiesProvider({ children }) {
   const [celebs, setCelebs] = useState([
     {
       name: "Rajinikanth",
@@ -88,18 +87,14 @@ function Router() {
   ]);
 
   return (
-    <Switch>
-      <Route exact path="/">
-        <UsersList />
-      </Route>
-      <Route path="/add-celeb">
-        <AddCelebs celebs={celebs} setCelebs={setCelebs} />
-      </Route>
-      <Route path="/edit-celeb/:id">
-        <AddCelebs celebs={celebs} setCelebs={setCelebs} />
-      </Route>
-    </Switch>
+    <celebrityContext.Provider value={{ celebs, setCelebs }}>
+      {children}
+    </celebrityContext.Provider>
   );
 }
 
-export default Router;
+export function useCelebrities() {
+  return useContext(celebrityContext);
+}
+
+export default CelebritiesProvider;
