@@ -4,15 +4,18 @@ import Router from "./Router";
 import UsersList from "./Components/UsersList";
 import "./App.css";
 import CelebritiesProvider from "./Providers/CelebritiesProvider";
+import LoaderProvider from "./Providers/LoaderProvider";
 
 function App() {
   return (
-    <CelebritiesProvider>
-      <div className="App">
-        <Header />
-        <Router />
-      </div>
-    </CelebritiesProvider>
+    <LoaderProvider>
+      <CelebritiesProvider>
+        <div className="App">
+          <Header />
+          <Router />
+        </div>
+      </CelebritiesProvider>
+    </LoaderProvider>
   );
 }
 

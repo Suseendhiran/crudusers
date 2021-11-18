@@ -1,45 +1,80 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import { useParams, useHistory } from "react-router-dom";
 import { Formik } from "formik";
-import { useCelebrities } from "../../Providers/CelebritiesProvider";
+import { useLoader } from "../../Providers/LoaderProvider";
+import axios from "../../Api/Api";
+import { celebrityFormSchema } from "../../helpers/validationSchema";
 
 function Index() {
-  const { celebs, setCelebs } = useCelebrities();
+  const [celeb, setCeleb] = useState({});
+  const INPUTS = [
+    { name: "name", label: "Celebrity name" },
+    { name: "imageUrl", label: "Image Url" },
+    { name: "about", label: "About the Celeb" },
+    { name: "wikiUrl", label: "Wikipedia Url" },
+  ];
+  const { setLoading } = useLoader();
   const { id } = useParams();
   let history = useHistory();
   const handleCelebDetails = (values) => {
-    let celebList = [...celebs];
-
+    setLoading(true);
     if (id) {
-      celebList[id] = { ...values };
-
-      setCelebs([...celebList]);
-      history.push("/");
+      axios
+        .put(`/celebrities/${id}`, {
+          ...values,
+        })
+        .then((res) => {
+          console.log("uPdated", res);
+          history.push("/");
+          setLoading(false);
+        });
     } else {
-      setCelebs([...celebList, { ...values }]);
-      history.push("/");
+      axios
+        .post(`/celebrities`, {
+          ...values,
+        })
+        .then((res) => {
+          console.log("uPdated", res);
+          history.push("/");
+          setLoading(false);
+        });
     }
   };
+  useEffect(() => {
+    setLoading(true);
+    if (id) {
+      axios.get(`/celebrities/${id}`).then((res) => {
+        //console.log("uPdated", res.data);
+        setCeleb(res.data);
+        setLoading(false);
+      });
+    } else {
+      setCeleb({});
+      setLoading(false);
+    }
+  }, [id]);
 
   return (
     <>
       <h1 className="edit-head">{id ? "Edit" : "Add"} Celebrity</h1>
+
       <Formik
         initialValues={{
-          name: celebs[id]?.name ? celebs[id]?.name : "",
-          imageUrl: celebs[id]?.imageUrl ? celebs[id]?.imageUrl : "",
-          about: celebs[id]?.about ? celebs[id]?.about : "",
-          wikiUrl: celebs[id]?.wikiUrl ? celebs[id]?.wikiUrl : "",
+          name: celeb?.name ? celeb.name : "",
+          imageUrl: celeb?.imageUrl ? celeb.imageUrl : "",
+          about: celeb?.about ? celeb.about : "",
+          wikiUrl: celeb?.wikiUrl ? celeb.wikiUrl : "",
         }}
+        validationSchema={celebrityFormSchema}
         enableReinitialize
         onSubmit={(values) => {
           handleCelebDetails(values);
         }}
       >
-        {({ handleSubmit, values, handleChange }) => {
+        {({ handleSubmit, values, handleChange, errors }) => {
           return (
             <Box
               component="form"
@@ -58,42 +93,22 @@ function Index() {
                 marginTop: "30px",
               }}
             >
-              <TextField
-                id="outlined-basic"
-                required
-                label="Celebrity name"
-                variant="outlined"
-                value={values.name}
-                name="name"
-                onChange={handleChange}
-              />
-              <TextField
-                id="outlined-basic"
-                required
-                label="Image Url"
-                variant="outlined"
-                value={values.imageUrl}
-                name="imageUrl"
-                onChange={handleChange}
-              />
-              <TextField
-                id="outlined-basic"
-                required
-                label="About the Celeb"
-                variant="outlined"
-                value={values.about}
-                name="about"
-                onChange={handleChange}
-              />
-              <TextField
-                id="outlined-basic"
-                required
-                label="Wikipedia Url"
-                variant="outlined"
-                value={values.wikiUrl}
-                name="wikiUrl"
-                onChange={handleChange}
-              />
+              {INPUTS.map((input, index) => {
+                return (
+                  <TextField
+                    error={errors[input.name]}
+                    id="outlined-basic"
+                    label={input.label}
+                    variant="outlined"
+                    value={values[input.name]}
+                    name={input.name}
+                    onChange={handleChange}
+                    key={index}
+                    helperText={errors[input.name]}
+                  />
+                );
+              })}
+
               <Button variant="outlined" type="submit">
                 {id ? "Edit" : "Add"} Celebrity
               </Button>

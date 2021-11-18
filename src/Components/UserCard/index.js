@@ -23,15 +23,15 @@ export default function UserCard({ celebDetails, id, handleDelete }) {
         <CardMedia
           component="img"
           height="140"
-          image={celebDetails.imageUrl}
+          image={celebDetails?.imageUrl}
           alt="green iguana"
         />
         <CardContent>
           <Typography gutterBottom variant="h5" component="div">
-            {celebDetails.name}
+            {celebDetails?.name}
           </Typography>
           <Typography variant="body2" color="text.secondary">
-            {celebDetails.about}
+            {celebDetails?.about}
           </Typography>
         </CardContent>
       </CardActionArea>
@@ -54,7 +54,7 @@ export default function UserCard({ celebDetails, id, handleDelete }) {
               Edit
             </Button>
           </Link>
-          <a href={celebDetails.wikiUrl} target="_blank" rel="noreferrer">
+          <a href={celebDetails?.wikiUrl} target="_blank" rel="noreferrer">
             <InfoIcon />
           </a>
         </div>
