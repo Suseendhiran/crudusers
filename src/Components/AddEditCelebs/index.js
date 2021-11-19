@@ -74,7 +74,14 @@ function Index() {
           handleCelebDetails(values);
         }}
       >
-        {({ handleSubmit, values, handleChange, errors }) => {
+        {({
+          handleSubmit,
+          values,
+          handleChange,
+          handleBlur,
+          errors,
+          touched,
+        }) => {
           return (
             <Box
               component="form"
@@ -96,13 +103,14 @@ function Index() {
               {INPUTS.map((input, index) => {
                 return (
                   <TextField
-                    error={errors[input.name]}
+                    error={touched[input.name] && errors[input.name]}
                     id="outlined-basic"
                     label={input.label}
                     variant="outlined"
                     value={values[input.name]}
                     name={input.name}
                     onChange={handleChange}
+                    onBlur={handleBlur}
                     key={index}
                     helperText={errors[input.name]}
                   />
