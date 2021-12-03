@@ -10,13 +10,13 @@ function Index() {
   const handleDelete = (id) => {
     let celebsList = celebs.filter((celeb, index) => index !== id);
     setCelebs([...celebsList]);
-    axios.delete(`/celebrities/${id}`).then((data) => {
+    axios.delete(`/celebs/${id}`).then((data) => {
       getCelebrities();
     });
   };
   const getCelebrities = () => {
     setLoading(true);
-    axios.get("/celebrities").then((data) => {
+    axios.get("/celebs").then((data) => {
       // console.log("celebsdata", data.data);
       setCelebs(data.data);
       setLoading(false);
@@ -32,7 +32,7 @@ function Index() {
       {celebs?.map((item, i) => (
         <UserCard
           celebDetails={item}
-          id={item?.id}
+          id={item?._id}
           handleDelete={handleDelete}
         />
       ))}

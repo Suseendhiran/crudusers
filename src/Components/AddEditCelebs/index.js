@@ -23,7 +23,7 @@ function Index() {
     setLoading(true);
     if (id) {
       axios
-        .put(`/celebrities/${id}`, {
+        .put(`/celebs/${id}`, {
           ...values,
         })
         .then((res) => {
@@ -33,7 +33,7 @@ function Index() {
         });
     } else {
       axios
-        .post(`/celebrities`, {
+        .post(`/celebs`, {
           ...values,
         })
         .then((res) => {
@@ -46,7 +46,7 @@ function Index() {
   useEffect(() => {
     setLoading(true);
     if (id) {
-      axios.get(`/celebrities/${id}`).then((res) => {
+      axios.get(`/celebs/${id}`).then((res) => {
         //console.log("uPdated", res.data);
         setCeleb(res.data);
         setLoading(false);
