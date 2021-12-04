@@ -1,78 +1,56 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
-import { useParams, useHistory } from "react-router-dom";
 import { Formik } from "formik";
+import { useHistory } from "react-router-dom";
 import { useLoader } from "../../Providers/LoaderProvider";
+import { useAuth } from "../../Providers/AuthProvider";
 import { useToasts } from "react-toast-notifications";
 import axios from "../../Api/Api";
-import { celebrityFormSchema } from "../../helpers/validationSchema";
+import { loginSchema } from "../../helpers/validationSchema";
 
 function Index() {
-  const [celeb, setCeleb] = useState({});
-  const { addToast } = useToasts();
-  const INPUTS = [
-    { name: "name", label: "Celebrity name" },
-    { name: "imageUrl", label: "Image Url" },
-    { name: "about", label: "About the Celeb" },
-    { name: "wikiUrl", label: "Wikipedia Url" },
-  ];
+  const history = useHistory();
   const { setLoading } = useLoader();
-  const { id } = useParams();
+  const { addToast } = useToasts();
+  const { setToken } = useAuth();
 
-  let history = useHistory();
-  const handleCelebDetails = (values) => {
+  const INPUTS = [
+    { name: "userName", label: "Username" },
+    { name: "password", label: "Password" },
+  ];
+  const handleLogin = (values) => {
     setLoading(true);
-    if (id) {
-      axios
-        .put(`/celebs/${id}`, {
-          ...values,
-        })
-        .then((res) => {
-          history.push("/celebs");
-          setLoading(false);
-          addToast(res.data.message, { appearance: "success" });
-        });
-    } else {
-      axios
-        .post(`/celebs`, {
-          ...values,
-        })
-        .then((res) => {
-          history.push("/celebs");
-          setLoading(false);
-        });
-    }
-  };
-  useEffect(() => {
-    setLoading(true);
-    if (id) {
-      axios.get(`/celebs/${id}`).then((res) => {
-        setCeleb(res.data);
+    axios
+      .post(`/users/login`, {
+        ...values,
+      })
+      .then((res) => {
+        localStorage.setItem("token", res.data.token);
+        setToken(res.data.token);
+        addToast(res.data.message, { appearance: "success" });
         setLoading(false);
+        history.push("/celebs");
+      })
+      .catch((err) => {
+        setLoading(false);
+        addToast(err.response.data.message, { appearance: "error" });
       });
-    } else {
-      setCeleb({});
-      setLoading(false);
-    }
-  }, [id, setLoading]);
-
+  };
   return (
-    <>
-      <h1 className="edit-head">{id ? "Edit" : "Add"} Celebrity</h1>
+    <div className="auth-wrapper">
+      <h1 className="edit-head">Login</h1>
 
       <Formik
         initialValues={{
-          name: celeb?.name ? celeb.name : "",
-          imageUrl: celeb?.imageUrl ? celeb.imageUrl : "",
-          about: celeb?.about ? celeb.about : "",
-          wikiUrl: celeb?.wikiUrl ? celeb.wikiUrl : "",
+          userName: "",
+          password: "",
         }}
-        validationSchema={celebrityFormSchema}
+        validationSchema={loginSchema}
         enableReinitialize
         onSubmit={(values) => {
-          handleCelebDetails(values);
+          handleLogin(values);
         }}
       >
         {({
@@ -97,7 +75,7 @@ function Index() {
                 width: "100%",
                 margin: "auto",
                 justifyContent: "center",
-                alignItems: "flex-start",
+                alignItems: "center",
                 marginTop: "30px",
               }}
             >
@@ -105,7 +83,11 @@ function Index() {
                 return (
                   <TextField
                     error={touched[input.name] && errors[input.name]}
-                    id="outlined-basic"
+                    id={
+                      input.name === "password"
+                        ? "outlined-password-input"
+                        : "outlined-basic"
+                    }
                     label={input.label}
                     variant="outlined"
                     value={values[input.name]}
@@ -113,19 +95,33 @@ function Index() {
                     onChange={handleChange}
                     onBlur={handleBlur}
                     key={index}
-                    helperText={errors[input.name]}
+                    helperText={
+                      touched[input.name] && errors[input.name]
+                        ? errors[input.name]
+                        : null
+                    }
+                    type={input.name}
                   />
                 );
               })}
 
               <Button variant="outlined" type="submit">
-                {id ? "Edit" : "Add"} Celebrity
+                login
               </Button>
+              <p>
+                No Account?
+                <button
+                  className="auth-route-text"
+                  onClick={() => history.push("/signup")}
+                >
+                  Create Account
+                </button>
+              </p>
             </Box>
           );
         }}
       </Formik>
-    </>
+    </div>
   );
 }
 
