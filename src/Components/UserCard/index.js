@@ -21,20 +21,27 @@ export default function UserCard({ celebDetails, id, handleDelete }) {
         }}
       >
         <CardActionArea>
-          <CardMedia
-            component="img"
-            height="140"
-            image={celebDetails?.imageUrl}
-            alt="green iguana"
-          />
-          <CardContent>
-            <Typography gutterBottom variant="h5" component="div">
-              {celebDetails?.name}
-            </Typography>
-            <Typography variant="body2" color="text.secondary">
-              {celebDetails?.about}
-            </Typography>
-          </CardContent>
+          <a
+            style={{ textDecoration: "none" }}
+            target="_blank"
+            rel="noreferrer"
+            href={celebDetails.wikiUrl}
+          >
+            <CardMedia
+              component="img"
+              height="140"
+              image={celebDetails?.imageUrl}
+              alt="green iguana"
+            />
+            <CardContent>
+              <Typography gutterBottom variant="h5" component="div">
+                {celebDetails?.name}
+              </Typography>
+              <Typography variant="body2" color="text.secondary">
+                {celebDetails?.about}
+              </Typography>
+            </CardContent>
+          </a>
         </CardActionArea>
         <CardActions
           style={{
