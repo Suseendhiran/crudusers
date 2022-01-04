@@ -11,6 +11,7 @@ function Router() {
       <ProtectedRoute path="/" exact>
         <LoginScreen />
       </ProtectedRoute>
+
       <ProtectedRoute path="/signup">
         <SignUpScreen />
       </ProtectedRoute>
@@ -20,6 +21,9 @@ function Router() {
         path="/edit-celeb/:id"
         component={AddCelebs}
       ></ProtectedRoute>
+      <ProtectedRoute path="*" exact>
+        <LoginScreen />
+      </ProtectedRoute>
     </Switch>
   );
 }
