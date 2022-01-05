@@ -1,51 +1,60 @@
 import React from "react";
+import { useLocation } from "react-router-dom";
+import axios from "../../Api/Api";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import { Formik } from "formik";
-import { useHistory } from "react-router-dom";
-import { useLoader } from "../../Providers/LoaderProvider";
 import { useToasts } from "react-toast-notifications";
-import { useAuth } from "../../Providers/AuthProvider";
-import axios from "../../Api/Api";
-import { signupSchema } from "../../helpers/validationSchema";
+import { useLoader } from "../../Providers/LoaderProvider.js";
+import { useHistory } from "react-router-dom";
+import { changePasswordSchema } from "../../helpers/validationSchema";
 
 function Index() {
-  const { addToast } = useToasts();
-  const history = useHistory();
-  const { setLoading } = useLoader();
-  const { setToken } = useAuth();
-
   const INPUTS = [
-    { name: "email", label: "Email" },
     { name: "password", label: "Password" },
+    { name: "confirmPassword", label: "Confirm Password" },
   ];
-  const handleSignUp = (values) => {
+  const { search } = useLocation();
+  const { addToast } = useToasts();
+  const { setLoading } = useLoader();
+  const history = useHistory();
+  const queryParams = new URLSearchParams(search);
+  const token = queryParams.get("token");
+  const id = queryParams.get("id");
+
+  const handleChangePassword = (values) => {
     setLoading(true);
     axios
-      .post(`/users/signup`, values)
+      .put(`/users/resetpassword`, {
+        token: token,
+        id: id,
+        password: values.password,
+      })
       .then((res) => {
-        history.push("/celebs");
-        localStorage.setItem("token", res.data.token);
-        setToken(res.data.token);
-        setLoading(false);
         addToast(res.data.message, { appearance: "success" });
+        setLoading(false);
+        history.push("/");
       })
       .catch((err) => {
         setLoading(false);
         addToast(err.response.data.message, { appearance: "error" });
       });
   };
+  console.log("token", queryParams.get("location"));
   return (
     <div className="auth-wrapper">
-      <h1 className="edit-head"> Signup</h1>
+      <h1 className="edit-head">Reset Password</h1>
 
       <Formik
-        initialValues={{ email: "", password: "" }}
-        validationSchema={signupSchema}
+        initialValues={{
+          password: "",
+          confirmPassword: "",
+        }}
+        validationSchema={changePasswordSchema}
         enableReinitialize
         onSubmit={(values) => {
-          handleSignUp(values);
+          handleChangePassword(values);
         }}
       >
         {({
@@ -95,23 +104,14 @@ function Index() {
                         ? errors[input.name]
                         : null
                     }
-                    type={input.name}
+                    type={"password"}
                   />
                 );
               })}
 
-              <Button variant="outlined" type="submit">
-                Sign Up
+              <Button variant="outlined" type="submit" fullWidth="100px">
+                Submit
               </Button>
-              <p>
-                Already have an account?{" "}
-                <button
-                  className="auth-route-text"
-                  onClick={() => history.push("/")}
-                >
-                  Login
-                </button>
-              </p>
             </Box>
           );
         }}

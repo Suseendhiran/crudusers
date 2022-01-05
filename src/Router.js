@@ -1,7 +1,9 @@
 import React from "react";
-import { Switch } from "react-router-dom";
+import { Switch, Route } from "react-router-dom";
 import UsersList from "./Components/UsersList";
 import AddCelebs from "./Components/AddEditCelebs";
+import ResetPassword from "./Components/ResetPassword";
+import ForgotPassword from "./Components/ForgotPassword";
 import LoginScreen from "./Components/LoginScreen";
 import SignUpScreen from "./Components/SignUpScreen";
 import ProtectedRoute from "./ProtectedRoute";
@@ -11,10 +13,15 @@ function Router() {
       <ProtectedRoute path="/" exact>
         <LoginScreen />
       </ProtectedRoute>
-
-      <ProtectedRoute path="/signup">
+      <Route path="/forgotpassword">
+        <ForgotPassword />
+      </Route>
+      <Route path="/signup">
         <SignUpScreen />
-      </ProtectedRoute>
+      </Route>
+      <Route path="/resetpassword">
+        <ResetPassword />
+      </Route>
       <ProtectedRoute path="/celebs" component={UsersList}></ProtectedRoute>
       <ProtectedRoute path="/add-celeb" component={AddCelebs}></ProtectedRoute>
       <ProtectedRoute

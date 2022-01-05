@@ -17,13 +17,7 @@ const celebrityFormSchema = yup.object().shape({
 });
 
 const loginSchema = yup.object().shape({
-  userName: yup
-    .string()
-    .required("Username is Required")
-    .matches(
-      /^[a-zA-Z0-9]+([._]?[a-zA-Z0-9]+)*$/,
-      "Username Should not contain special characters or spaces"
-    ),
+  email: yup.string().email("Must be a valid email"),
   password: yup
     .string()
     .required("Password is Required")
@@ -34,13 +28,7 @@ const loginSchema = yup.object().shape({
 });
 
 const signupSchema = yup.object().shape({
-  userName: yup
-    .string()
-    .required("Username is Required")
-    .matches(
-      /^[a-zA-Z0-9]+([._]?[a-zA-Z0-9]+)*$/,
-      "Username Should not contain special characters or spaces"
-    ),
+  email: yup.string().email("Must be a valid email"),
   password: yup
     .string()
     .required("Password is Required")
@@ -50,4 +38,29 @@ const signupSchema = yup.object().shape({
     ),
 });
 
-export { celebrityFormSchema, loginSchema, signupSchema };
+const changePasswordSchema = yup.object().shape({
+  password: yup
+    .string()
+    .required("Password is Required")
+    .matches(
+      /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/,
+      "Password should contain atleast one uppercase, one lowercase and one special character"
+    ),
+  confirmPassword: yup
+    .string()
+    .test("", "Passwords must match", function (value) {
+      return this.parent.password === value;
+    }),
+});
+
+const forgotPasswordSchema = yup.object().shape({
+  email: yup.string().email("Must be a valid email"),
+});
+
+export {
+  celebrityFormSchema,
+  loginSchema,
+  signupSchema,
+  changePasswordSchema,
+  forgotPasswordSchema,
+};

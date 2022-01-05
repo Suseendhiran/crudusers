@@ -17,7 +17,7 @@ function Index() {
   const { setToken } = useAuth();
 
   const INPUTS = [
-    { name: "userName", label: "Username" },
+    { name: "email", label: "Email" },
     { name: "password", label: "Password" },
   ];
   const handleLogin = (values) => {
@@ -44,7 +44,7 @@ function Index() {
 
       <Formik
         initialValues={{
-          userName: "",
+          email: "",
           password: "",
         }}
         validationSchema={loginSchema}
@@ -108,15 +108,23 @@ function Index() {
               <Button variant="outlined" type="submit">
                 login
               </Button>
-              <p>
-                No Account?
-                <button
+              <div className="otheroptions">
+                <p>
+                  No Account?
+                  <button
+                    className="auth-route-text"
+                    onClick={() => history.push("/signup")}
+                  >
+                    Create Account
+                  </button>
+                </p>
+                <p
+                  onClick={() => history.push("/forgotpassword")}
                   className="auth-route-text"
-                  onClick={() => history.push("/signup")}
                 >
-                  Create Account
-                </button>
-              </p>
+                  Forgot Password?
+                </p>
+              </div>
             </Box>
           );
         }}

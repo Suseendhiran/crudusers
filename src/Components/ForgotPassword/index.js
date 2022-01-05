@@ -4,32 +4,27 @@ import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import { Formik } from "formik";
 import { useHistory } from "react-router-dom";
-import { useLoader } from "../../Providers/LoaderProvider";
-import { useToasts } from "react-toast-notifications";
+import { useLoader } from "../../Providers/LoaderProvider.js";
 import { useAuth } from "../../Providers/AuthProvider";
+import { useToasts } from "react-toast-notifications";
 import axios from "../../Api/Api";
-import { signupSchema } from "../../helpers/validationSchema";
+import { forgotPasswordSchema } from "../../helpers/validationSchema";
 
 function Index() {
-  const { addToast } = useToasts();
   const history = useHistory();
   const { setLoading } = useLoader();
-  const { setToken } = useAuth();
+  const { addToast } = useToasts();
 
-  const INPUTS = [
-    { name: "email", label: "Email" },
-    { name: "password", label: "Password" },
-  ];
-  const handleSignUp = (values) => {
+  const INPUTS = [{ name: "email", label: "Email" }];
+  const handleForgotPassword = (values) => {
     setLoading(true);
     axios
-      .post(`/users/signup`, values)
+      .put(`/users/forgotpassword`, {
+        ...values,
+      })
       .then((res) => {
-        history.push("/celebs");
-        localStorage.setItem("token", res.data.token);
-        setToken(res.data.token);
-        setLoading(false);
         addToast(res.data.message, { appearance: "success" });
+        setLoading(false);
       })
       .catch((err) => {
         setLoading(false);
@@ -38,14 +33,16 @@ function Index() {
   };
   return (
     <div className="auth-wrapper">
-      <h1 className="edit-head"> Signup</h1>
+      <h1 className="edit-head">Forgot Password</h1>
 
       <Formik
-        initialValues={{ email: "", password: "" }}
-        validationSchema={signupSchema}
+        initialValues={{
+          email: "",
+        }}
+        validationSchema={forgotPasswordSchema}
         enableReinitialize
         onSubmit={(values) => {
-          handleSignUp(values);
+          handleForgotPassword(values);
         }}
       >
         {({
@@ -101,17 +98,25 @@ function Index() {
               })}
 
               <Button variant="outlined" type="submit">
-                Sign Up
+                Submit
               </Button>
-              <p>
-                Already have an account?{" "}
+              <div className="otheroptions">
+                <p>
+                  No Account?
+                  <button
+                    className="auth-route-text"
+                    onClick={() => history.push("/signup")}
+                  >
+                    Create Account
+                  </button>
+                </p>
                 <button
                   className="auth-route-text"
-                  onClick={() => history.push("/")}
+                  onClick={() => history.push("/login")}
                 >
                   Login
                 </button>
-              </p>
+              </div>
             </Box>
           );
         }}
